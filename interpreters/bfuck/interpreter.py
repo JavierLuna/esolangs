@@ -8,7 +8,7 @@ class BrainFuckInterpreter:
         self._code = code
         self._code_is_dirty = False
         self._cached_ast = None
-        self.env = BFEnvironment(code)
+        self.env = BFEnvironment()
 
     def execute(self):
         next_command = self._get_ast()
