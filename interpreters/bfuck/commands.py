@@ -53,10 +53,10 @@ class BFRepetibleCommand(BFCommand):
             return self._operator_lz
 
     def __repr__(self):
-        return self.operator * self.times
+        return self.operator * abs(self.times)
 
     def __str__(self):
-        return self.operator * self.times
+        return self.operator * abs(self.times)
 
     def __add__(self, other):
         self.times += other.times
@@ -150,19 +150,19 @@ class ClosingBranchCommand(BFBranchCommand):
 
     @property
     def companion(self):
-        return self._next_true
+        return self._next_false
 
     @companion.setter
     def companion(self, value):
-        self._next_true = value
+        self._next_false = value
 
     @property
     def no_jump(self):
-        return self._next_false
+        return self._next_true
 
     @no_jump.setter
     def no_jump(self, value):
-        self._next_false = value
+        self._next_true = value
 
 
 TOKEN_TO_COMMAND = {PLUS_SIGN: CellValueIncrementCommand,

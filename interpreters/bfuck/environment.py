@@ -1,8 +1,7 @@
 class BFEnvironment:
     N_CELLS = 30000
 
-    def __init__(self, code):
-        self.code = code
+    def __init__(self):
         self.cells = [0 for _ in range(self.N_CELLS * 2)]
         self.cell_pointer = int(len(self.cells) / 2)
         self.code_pointer = 0
@@ -20,6 +19,3 @@ class BFEnvironment:
     def current_cell(self, val):
         self.cells[self.cell_pointer] = val
 
-    @property
-    def current_token(self):
-        return self.code[self.code_pointer]
