@@ -1,6 +1,6 @@
 # Esoteric Interpreters
 
-Collection of esoteric interpreters i've wrotten.
+Collection of esoteric interpreters i've written.
 
 ## Available interpreters:
 
