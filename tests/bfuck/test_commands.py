@@ -8,7 +8,7 @@ from interpreters.bfuck.commands import BFRepetibleCommand, BFBranchCommand, Cel
 from interpreters.bfuck.environment import BFEnvironment
 
 
-class BFCommandTest(unittest.TestCase):
+class TestBFCommand(unittest.TestCase):
 
     def test_next(self):
         command_1 = BFCommand(None, next=None)
@@ -29,7 +29,7 @@ class BFCommandTest(unittest.TestCase):
         command.execute()
 
 
-class BFBranchCommandTest(unittest.TestCase):
+class TestBFBranchCommand(unittest.TestCase):
 
     def test_branch_condition_false(self):
         env = BFEnvironment()
@@ -56,7 +56,7 @@ class BFBranchCommandTest(unittest.TestCase):
         self.assertEqual(b_command.next, 2)
 
 
-class BFRepetibleCommandTest(unittest.TestCase):
+class TestBFRepetibleCommand(unittest.TestCase):
 
     def test_add_bfrepetible_commands_positives(self):
         command_1, command_2 = BFRepetibleCommand(None, times=1), BFRepetibleCommand(None, times=1)
@@ -79,7 +79,7 @@ class BFRepetibleCommandTest(unittest.TestCase):
         self.assertEqual(command_3.times, -2)
 
 
-class CellPointerIncrementCommandTest(unittest.TestCase):
+class TestCellPointerIncrementCommand(unittest.TestCase):
 
     def test_simple_positive_increment(self):
         env = BFEnvironment()
@@ -163,7 +163,7 @@ class CellPointerIncrementCommandTest(unittest.TestCase):
         self.assertEqual(repr(cpi_command), "")
 
 
-class CellValueIncrementCommandTest(unittest.TestCase):
+class TestCellValueIncrementCommand(unittest.TestCase):
     def test_simple_positive_increment(self):
         env = BFEnvironment()
         current_cell_value = env.current_cell
@@ -214,7 +214,7 @@ class CellValueIncrementCommandTest(unittest.TestCase):
         self.assertEqual(str(cpi_command), "")
 
 
-class GetCellValueCommandTest(unittest.TestCase):
+class TestGetCellValueCommand(unittest.TestCase):
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_get_cell_value(self, mock_stdout):
@@ -225,7 +225,7 @@ class GetCellValueCommandTest(unittest.TestCase):
         self.assertEqual(mock_stdout.getvalue(), "a")
 
 
-class SetCellValueCommandTest(unittest.TestCase):
+class TestSetCellValueCommand(unittest.TestCase):
 
     @patch('sys.stdin.read')
     def test_set_cell_value(self, mock_stdin):
@@ -237,7 +237,7 @@ class SetCellValueCommandTest(unittest.TestCase):
         self.assertEqual(env.current_cell, ord("a"))
 
 
-class OpenBranchCommandTest(unittest.TestCase):
+class TestOpenBranchCommand(unittest.TestCase):
 
     def test_assign_companion(self):
         ob_command = OpenBranchCommand(None, companion=None)
@@ -262,7 +262,7 @@ class OpenBranchCommandTest(unittest.TestCase):
         self.assertEqual(ob_command.companion, 1)
 
 
-class ClosingBranchCommandTest(unittest.TestCase):
+class TestClosingBranchCommand(unittest.TestCase):
 
     def test_assign_companion(self):
         cb_command = ClosingBranchCommand(None, companion=None)

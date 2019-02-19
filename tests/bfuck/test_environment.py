@@ -3,7 +3,7 @@ import unittest
 from interpreters.bfuck.environment import BFEnvironment
 
 
-class BFEnvironmentTest(unittest.TestCase):
+class TestBFEnvironment(unittest.TestCase):
 
     def setUp(self):
         self.env = BFEnvironment()
