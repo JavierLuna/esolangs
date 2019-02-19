@@ -77,8 +77,10 @@ class BFBranchCommand(BFCommand):
     def next(self):
         next = self.no_jump
         if self.branch_condition():
-            next = self.companion or BFCommand(self.env)
-            next = next.next
+            # Ohhh shit! This guy's jumping!
+            next = self.companion
+            if isinstance(self.companion, BFBranchCommand):
+                next = next.no_jump
         return next
 
 

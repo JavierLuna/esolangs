@@ -1,4 +1,6 @@
 import unittest
+from io import StringIO
+from unittest.mock import patch
 
 from interpreters import BrainFuckInterpreter
 
@@ -82,3 +84,30 @@ class TestBFPrograms(unittest.TestCase):
         code = "++++>+++++<[>+<-]"
         interpreter = BrainFuckInterpreter(code)
         interpreter.execute()
+        self.assertEqual(interpreter.env.current_cell, 0)
+        interpreter.env.cell_pointer += 1
+        self.assertEqual(interpreter.env.current_cell, 9)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_print_char(self, mock_stdout):
+        code = "+" * ord("a") + "."
+        interpreter = BrainFuckInterpreter(code)
+        interpreter.execute()
+        self.assertEqual(mock_stdout.getvalue(), "a")
+
+    @patch('sys.stdout', new_callable=StringIO)
+    @patch('sys.stdin.read')
+    def test_uppercase_char(self, mock_stdin, mock_stdout):
+        mock_stdin.return_value = 'a'
+        code = "," + "-" * 32 + "."
+        interpreter = BrainFuckInterpreter(code)
+        interpreter.execute()
+        self.assertEqual(mock_stdout.getvalue(), "A")
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_print_hello_world(self, mock_stdout):
+        code = "++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++" \
+               ".>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>."
+        interpreter = BrainFuckInterpreter(code)
+        interpreter.execute()
+        self.assertEqual(mock_stdout.getvalue(), "Hello World!\n")
