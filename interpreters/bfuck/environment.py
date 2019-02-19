@@ -19,3 +19,8 @@ class BFEnvironment:
     def current_cell(self, val):
         self.cells[self.cell_pointer] = val
 
+    def __repr__(self):
+        return f"Value: {self.current_cell}, pointer: {self.cell_pointer}"
+
+    def __str__(self):
+        return repr(self)

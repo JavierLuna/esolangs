@@ -65,9 +65,9 @@ class BFRepetibleCommand(BFCommand):
 
 class BFBranchCommand(BFCommand):
 
-    def __init__(self, env: BFEnvironment, next_true: BFCommand = None, next_false: BFCommand = None, operator="["):
-        self._next_true = next_true
-        self._next_false = next_false
+    def __init__(self, env: BFEnvironment, companion: BFCommand = None, no_jump: BFCommand = None, operator="["):
+        self.companion = companion
+        self.no_jump = no_jump
         super().__init__(env, operator=operator)
 
     def branch_condition(self):
@@ -75,7 +75,11 @@ class BFBranchCommand(BFCommand):
 
     @property
     def next(self):
-        return self._next_true if self.branch_condition() else self._next_false
+        next = self.no_jump
+        if self.branch_condition():
+            next = self.companion or BFCommand(self.env)
+            next = next.next
+        return next
 
 
 class CellPointerIncrementCommand(BFRepetibleCommand):
@@ -123,46 +127,20 @@ class GetCellValueCommand(BFCommand):
 
 class OpenBranchCommand(BFBranchCommand):
 
-    def __init__(self, env, companion=None, next=None):
-        super().__init__(env, next_true=next, next_false=companion, operator="[")
+    def __init__(self, env, **kwargs):
+        super().__init__(env, operator='[', **kwargs)
 
-    @property
-    def companion(self):
-        return self._next_false
-
-    @companion.setter
-    def companion(self, value):
-        self._next_false = value
-
-    @property
-    def no_jump(self):
-        return self._next_true
-
-    @no_jump.setter
-    def no_jump(self, value):
-        self._next_true = value
+    def branch_condition(self):
+        return not bool(self.env.current_cell)
 
 
 class ClosingBranchCommand(BFBranchCommand):
 
-    def __init__(self, env, companion=None, next=None):
-        super().__init__(env, next_true=companion, next_false=next, operator="]")
+    def __init__(self, env, **kwargs):
+        super().__init__(env, operator="]", **kwargs)
 
-    @property
-    def companion(self):
-        return self._next_false
-
-    @companion.setter
-    def companion(self, value):
-        self._next_false = value
-
-    @property
-    def no_jump(self):
-        return self._next_true
-
-    @no_jump.setter
-    def no_jump(self, value):
-        self._next_true = value
+    def branch_condition(self):
+        return bool(self.env.current_cell)
 
 
 TOKEN_TO_COMMAND = {PLUS_SIGN: CellValueIncrementCommand,

@@ -45,14 +45,16 @@ class TestBFBranchCommand(unittest.TestCase):
 
     def test_jump_condition_true(self):
         env = BFEnvironment()
+        bf_command_companion, bf_command_no_jump = BFCommand(env, next=1), BFCommand(env, next=2)
         env.current_cell = 1
-        b_command = BFBranchCommand(env, next_true=1, next_false=2)
+        b_command = BFBranchCommand(env, companion=bf_command_companion, no_jump=bf_command_no_jump)
         self.assertEqual(b_command.next, 1)
 
     def test_jump_condition_false(self):
         env = BFEnvironment()
+        bf_command_companion, bf_command_no_jump = BFCommand(env, next=1), 2
         env.current_cell = 0
-        b_command = BFBranchCommand(env, next_true=1, next_false=2)
+        b_command = BFBranchCommand(env, companion=bf_command_companion, no_jump=bf_command_no_jump)
         self.assertEqual(b_command.next, 2)
 
 
@@ -245,21 +247,23 @@ class TestOpenBranchCommand(unittest.TestCase):
         self.assertEqual(ob_command.companion, 1)
 
     def test_assign_no_jump(self):
-        ob_command = OpenBranchCommand(None, next=2)
+        ob_command = OpenBranchCommand(None, no_jump=2)
         ob_command.no_jump = 1
         self.assertEqual(ob_command.no_jump, 1)
 
     def test_next_true_command(self):
         env = BFEnvironment()
+        bf_command_companion, bf_command_no_jump = BFCommand(env, next=1), 2
         env.current_cell = 1
-        ob_command = OpenBranchCommand(env, companion=1, next=2)
+        ob_command = OpenBranchCommand(env, companion=bf_command_companion, no_jump=bf_command_no_jump)
         self.assertEqual(ob_command.next, 2)
 
     def test_next_false_command(self):
         env = BFEnvironment()
+        bf_command_companion, bf_command_no_jump = BFCommand(env, next=1), BFCommand(env, next=2)
         env.current_cell = 0
-        ob_command = OpenBranchCommand(env, companion=1, next=2)
-        self.assertEqual(ob_command.companion, 1)
+        ob_command = OpenBranchCommand(env, companion=bf_command_companion, no_jump=bf_command_no_jump)
+        self.assertEqual(ob_command.next, 1)
 
 
 class TestClosingBranchCommand(unittest.TestCase):
@@ -270,18 +274,20 @@ class TestClosingBranchCommand(unittest.TestCase):
         self.assertEqual(cb_command.companion, 1)
 
     def test_assign_no_jump(self):
-        cb_command = ClosingBranchCommand(None, next=2)
+        cb_command = ClosingBranchCommand(None, no_jump=2)
         cb_command.no_jump = 1
         self.assertEqual(cb_command.no_jump, 1)
 
     def test_next_true_command(self):
         env = BFEnvironment()
+        bf_command_companion, bf_command_no_jump = BFCommand(env, next=1), BFCommand(env, next=2)
         env.current_cell = 1
-        cb_command = ClosingBranchCommand(env, companion=1, next=2)
+        cb_command = ClosingBranchCommand(env, companion=bf_command_companion, no_jump=bf_command_no_jump)
         self.assertEqual(cb_command.next, 1)
 
     def test_next_false_command(self):
         env = BFEnvironment()
+        bf_command_companion, bf_command_no_jump = BFCommand(env, next=1), 2
         env.current_cell = 0
-        cb_command = ClosingBranchCommand(env, companion=1, next=2)
-        self.assertEqual(cb_command.companion, 2)
+        cb_command = ClosingBranchCommand(env, companion=bf_command_companion, no_jump=bf_command_no_jump)
+        self.assertEqual(cb_command.next, 2)

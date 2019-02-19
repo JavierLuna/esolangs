@@ -3,7 +3,7 @@ import unittest
 from interpreters import BrainFuckInterpreter
 
 
-class TestBFInterpreter(unittest.TestCase):
+class TestBFInterpreterUnitary(unittest.TestCase):
 
     def test_ast_caching_no_execution(self):
         interpreter = BrainFuckInterpreter("-.-.-.-.-.-.-.-")
@@ -74,3 +74,11 @@ class TestBFInterpreter(unittest.TestCase):
         interpreter.execute()
         self.assertIs(cached_ast, interpreter._cached_ast)
         self.assertFalse(interpreter._code_is_dirty)
+
+
+class TestBFPrograms(unittest.TestCase):
+
+    def test_add_two_cells(self):
+        code = "++++>+++++<[>+<-]"
+        interpreter = BrainFuckInterpreter(code)
+        interpreter.execute()
