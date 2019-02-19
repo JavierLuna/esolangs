@@ -22,8 +22,9 @@ class BrainFuckInterpreter:
 
     @code.setter
     def code(self, value):
-        self._code_is_dirty = True
-        self._code = value
+        if value != self._code:
+            self._code_is_dirty = True
+            self._code = value
 
     def _get_ast(self):
         if self._code_is_dirty or self._cached_ast is None:
